@@ -94,6 +94,13 @@ function avli() {
       brave-browser)
         echo "${login_url}" | xargs -t nohup brave-browser %U --no-first-run --new-window --start-maximized --disk-cache-dir=$(mktemp -d /tmp/brave.XXXXXX) --user-data-dir=$(mktemp -d /tmp/brave.XXXXXX) > /dev/null 2>&1 &
         ;;
+      firefox-container)
+        # requires the following extensions to work:
+        # https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/
+        # https://addons.mozilla.org/en-US/firefox/addon/open-url-in-container/
+        encoded_url="ext+container:name=${1}&url=${login_url//&/%26}"
+        echo "${encoded_url}" | xargs -t nohup firefox > /dev/null 2>&1 &
+        ;;
       *)
         # NOTE PRs welcome to add your browser
         echo "Sorry, I don't know how to launch your default browser ($browser) :-("
